@@ -5,7 +5,7 @@ const manifest = async (): Promise<MetadataRoute.Manifest> => {
   if (process.env.NODE_ENV === 'development') {
     return {
       background_color: '#000000',
-      description: 'LobeHub Development',
+      description: 'BridgePoint AI Workspace Development',
       display: 'standalone',
       icons: [
         {
@@ -14,8 +14,8 @@ const manifest = async (): Promise<MetadataRoute.Manifest> => {
           type: 'image/png',
         },
       ],
-      name: 'LobeHub',
-      short_name: 'LobeHub',
+      name: 'BridgePoint AI Workspace',
+      short_name: 'BridgePoint AI',
       start_url: '/',
       theme_color: '#000000',
     };
@@ -30,7 +30,7 @@ const manifest = async (): Promise<MetadataRoute.Manifest> => {
 
   // @ts-expect-error - manifestModule.generate returns extended manifest with custom properties
   return manifestModule.generate({
-    description: `${BRANDING_NAME} is a work-and-lifestyle space to find, build, and collaborate with agent teams that grow with you.`,
+    description: `${BRANDING_NAME} — your AI-powered workspace for building and collaborating with intelligent agents.`,
     icons: [
       {
         purpose: 'any',

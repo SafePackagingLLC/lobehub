@@ -265,9 +265,9 @@
   "header": "Welcome",
   "pickAgent": "Or choose from the agent templates below",
   "skip": "Skip Creation",
-  "slogan.desc1": "Here, Agents are always on call. Ideas can collaborate, capture, and evolve.",
-  "slogan.desc2": "Create your first agent and let's get started~",
-  "slogan.title": "Give yourself a smarter mind",
+  "slogan.desc1": "Select an agent or start a conversation",
+  "slogan.desc2": "Your AI-powered workspace is ready.",
+  "slogan.title": "Welcome to your AI Workspace",
   "welcomeMessages": {
     "1": "Welcome back 😊",
     "2": "Hi, I'm here",
