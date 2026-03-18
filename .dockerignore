@@ -7,3 +7,6 @@ npm-debug.log
 .github
 *.md
 .env.example
+.env.local
+.env*.local
+docker-compose/dev/data
