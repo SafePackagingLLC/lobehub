@@ -1,7 +1,7 @@
 /**
  * BridgePoint AI — Agent Seed Script
  *
- * Seeds the 5 core BridgePoint AI agent templates into the database.
+ * Seeds the 19 BridgePoint AI manufacturing agent templates into the database.
  * Run after db:migrate and after at least one user has signed in.
  *
  * Usage:
