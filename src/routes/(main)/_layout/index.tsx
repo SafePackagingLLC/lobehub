@@ -11,6 +11,7 @@ import { Outlet } from 'react-router-dom';
 import Loading from '@/components/Loading/BrandTextLoading';
 import { isDesktop } from '@/const/version';
 import { BANNER_HEIGHT } from '@/features/AlertBanner/CloudBanner';
+import BridgePointAgentPanel from '@/features/BridgePointAgentPanel';
 import DesktopFileMenuBridge from '@/features/DesktopFileMenuBridge';
 import DesktopNavigationBridge from '@/features/DesktopNavigationBridge';
 import AuthRequiredModal from '@/features/Electron/AuthRequiredModal';
@@ -81,6 +82,8 @@ const Layout: FC = () => {
               </Suspense>
             </MarketAuthProvider>
           </DesktopLayoutContainer>
+          {/* BridgePoint AI — Right-hand Agent Panel */}
+          <BridgePointAgentPanel />
         </Flexbox>
       </DndContextWrapper>
       <Suspense fallback={null}>

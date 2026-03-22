@@ -16,8 +16,64 @@ const styles = createStaticStyles(({ css }) => {
       font-weight: 300;
       white-space: nowrap;
     `,
+    logoIcon: css`
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+
+      font-size: 18px;
+      font-weight: 800;
+      line-height: 1;
+      color: #fff;
+
+      background: linear-gradient(135deg, #3b82f6, #6366f1);
+    `,
+    logoSubtitle: css`
+      font-size: 10px;
+      font-weight: 500;
+      line-height: 1;
+      color: #3b82f6;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    `,
+    logoText: css`
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.2;
+      color: #fff;
+    `,
   };
 });
+
+/** BridgePoint AI gradient "B" icon */
+const BPLogoIcon = memo<{ size?: number }>(({ size = 36 }) => (
+  <div
+    className={styles.logoIcon}
+    style={{
+      borderRadius: Math.round(size * 0.28),
+      fontSize: Math.round(size * 0.5),
+      height: size,
+      width: size,
+    }}
+  >
+    B
+  </div>
+));
+
+/** Full branded logo: icon + text + subtitle */
+const BPCombinedLogo = memo<{ size?: number }>(({ size = 36 }) => (
+  <Flexbox horizontal align="center" gap={10}>
+    <BPLogoIcon size={size} />
+    <Flexbox gap={2}>
+      <span className={styles.logoText}>BridgePoint AI</span>
+      <span className={styles.logoSubtitle}>MANUFACTURING</span>
+    </Flexbox>
+  </Flexbox>
+));
 
 const CustomTextLogo = memo<FlexboxProps & { size: number }>(({ size, style, ...rest }) => {
   return (
@@ -38,6 +94,10 @@ const CustomTextLogo = memo<FlexboxProps & { size: number }>(({ size, style, ...
 
 const CustomImageLogo = memo<Omit<ImageProps, 'alt' | 'src'> & { size: number }>(
   ({ size, ...rest }) => {
+    // If no custom logo URL is set, render the gradient B icon
+    if (!BRANDING_LOGO_URL) {
+      return <BPLogoIcon size={size} />;
+    }
     return (
       <Image
         alt={BRANDING_NAME}
@@ -89,20 +149,8 @@ const CustomLogo = memo<LobeChatProps>(({ extra, size = 32, className, style, ty
       break;
     }
     case 'combine': {
-      logoComponent = (
-        <>
-          <CustomImageLogo size={size} />
-          <CustomTextLogo size={size} style={{ marginLeft: Math.round(size / 4) }} />
-        </>
-      );
-
-      if (!extra)
-        logoComponent = (
-          <Flexbox horizontal align={'center'} flex={'none'} {...rest}>
-            {logoComponent}
-          </Flexbox>
-        );
-
+      logoComponent = <BPCombinedLogo size={size} />;
+      if (!extra) return logoComponent;
       break;
     }
     default: {

@@ -8,7 +8,9 @@ const PageTitle = memo<{ title: string }>(({ title }) => {
   const setCurrentPageTitle = useElectronStore((s) => s.setCurrentPageTitle);
 
   useEffect(() => {
-    document.title = title ? `${title} · ${BRANDING_NAME}` : BRANDING_NAME;
+    document.title = title
+      ? `${title} · ${BRANDING_NAME}`
+      : `${BRANDING_NAME} — Manufacturing Workspace`;
 
     // Sync title to electron store for navigation history
     if (isDesktop) {
