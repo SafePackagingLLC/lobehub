@@ -2,9 +2,9 @@ export default {
   'guide.agents.replaceBtn': 'Refresh',
   'guide.agents.title': 'New Agent Recommendations:',
   'guide.defaultMessage':
-    'I’m your Agent {{appName}}. Start with any idea.<br />Need a more specialized Agent? Click <plus /> to create one.',
+    'Welcome to BridgePoint AI. Your AI-powered manufacturing workspace. Select an agent or describe what you need.',
   'guide.defaultMessageWithoutCreate':
-    'Welcome to {{appName}}. One sentence is enough—just state your goal.',
+    'Welcome to BridgePoint AI. Your AI-powered manufacturing workspace. Select an agent or describe what you need.',
   'guide.groupActivities.analysis.codeReview.description':
     'Technical discussions and peer reviews of code changes and implementations',
   'guide.groupActivities.analysis.codeReview.emoji': '💻',
@@ -349,9 +349,9 @@ export default {
   'header': 'Welcome',
   'pickAgent': 'Or choose from the agent templates below',
   'skip': 'Skip Creation',
-  'slogan.desc1': 'Select an agent or start a conversation',
-  'slogan.desc2': 'Your AI-powered workspace is ready.',
-  'slogan.title': 'Welcome to your AI Workspace',
+  'slogan.desc1': 'Your AI-powered manufacturing workspace',
+  'slogan.desc2': 'Select an agent or describe what you need.',
+  'slogan.title': 'Welcome to BridgePoint AI',
   'welcomeMessages': {
     '1': 'Welcome back 😊',
     '2': "Hi, I'm here",
@@ -362,7 +362,7 @@ export default {
     '7': 'Keep moving forward!',
     '8': 'Let’s do this 💪',
     '9': 'Let’s get to work 🏃‍♂️',
-    '10': 'Productivity at max~',
+    '10': 'Welcome to BridgePoint AI',
     '11': 'At your service!',
     '12': 'Thanks for waiting ☕',
     '13': 'Let’s get started ✅',
@@ -389,7 +389,7 @@ export default {
     '34': 'Everything’s ready',
     '35': 'Acceleration mode: ON',
     '36': 'Alright! Let’s begin 😎',
-    '37': 'I’m here waiting for you',
+    '37': 'Welcome to BridgePoint AI',
     '38': 'Keep up the good work!',
     '39': 'Don’t forget to take a break~ 💤',
   },

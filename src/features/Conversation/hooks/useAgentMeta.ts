@@ -1,3 +1,4 @@
+import { INBOX_SESSION_ID } from '@lobechat/const';
 import { type MetaData } from '@lobechat/types';
 import { useMemo } from 'react';
 
@@ -6,13 +7,12 @@ import { agentSelectors } from '@/store/agent/selectors';
 
 import { contextSelectors, useConversationStore } from '../store';
 
-const LOBE_AI_TITLE = 'Lobe AI';
+const BRIDGEPOINT_INBOX_TITLE = 'BridgePoint AI';
 
 /**
  * Hook to get agent meta data for a specific agent or the current conversation.
- * Handles special cases for builtin agents (inbox, page agent, agent builder)
- * by showing Lobe AI title instead of the agent's own meta.
- * Avatar is now returned from the backend (merged from builtin-agents package).
+ * The inbox (default) assistant is labeled BridgePoint AI; other agents use their stored meta.
+ * Avatar is returned from the backend (merged from builtin-agents package).
  *
  * @param messageAgentId - Optional agent ID from the message. If provided, uses this agent's meta.
  *                         Falls back to the current conversation's agent if not provided.
@@ -25,13 +25,9 @@ export const useAgentMeta = (messageAgentId?: string | null): MetaData => {
   const builtinAgentIdMap = useAgentStore((s) => s.builtinAgentIdMap);
 
   return useMemo(() => {
-    // Check if the current agent is a builtin agent
-    const builtinAgentIds = Object.values(builtinAgentIdMap);
-    const isBuiltinAgent = builtinAgentIds.includes(agentId);
-
-    if (isBuiltinAgent) {
-      // Use avatar from backend (merged from builtin-agents package), only override title
-      return { ...agentMeta, title: LOBE_AI_TITLE };
+    const inboxId = builtinAgentIdMap[INBOX_SESSION_ID];
+    if (inboxId && agentId === inboxId) {
+      return { ...agentMeta, title: BRIDGEPOINT_INBOX_TITLE };
     }
 
     return agentMeta;

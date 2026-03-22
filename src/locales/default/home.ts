@@ -1,3 +1,4 @@
+// BridgePoint AI customization - manufacturing-specific starter buttons
 export default {
   'agentSelection.empty': 'No agents available',
   'agentSelection.noAvailable': 'No agents can be added at the moment',
@@ -5,13 +6,13 @@ export default {
   'agentSelection.search': 'No matching agents found',
   'project.create': 'New project',
   'project.deleteConfirm':
-    'This project will be deleted and can’t be recovered. Confirm to continue.',
-  'starter.createAgent': 'Create Agent',
-  'starter.createGroup': 'Create Group',
+    "This project will be deleted and can't be recovered. Confirm to continue.",
+  'starter.createAgent': 'Equipment Issue',
+  'starter.createGroup': 'Process Invoice',
   'starter.deepResearch': 'Deep Research',
   'starter.developing': 'Coming soon',
   'starter.image': 'Image',
-  'starter.imageGeneration': 'Image Generation',
-  'starter.videoGeneration': 'Video Generation',
-  'starter.write': 'Write',
+  'starter.imageGeneration': 'Shift Handoff',
+  'starter.videoGeneration': 'Search SOPs',
+  'starter.write': 'Create Work Order',
 };

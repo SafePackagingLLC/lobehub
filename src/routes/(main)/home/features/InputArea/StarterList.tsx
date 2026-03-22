@@ -1,9 +1,15 @@
 import { BUILTIN_AGENT_SLUGS } from '@lobechat/builtin-agents';
 import { type ButtonProps } from '@lobehub/ui';
 import { Button, Center, Tooltip } from '@lobehub/ui';
-import { GroupBotSquareIcon } from '@lobehub/ui/icons';
 import { createStaticStyles, cssVar, cx } from 'antd-style';
-import { BotIcon, ImageIcon, PenLineIcon, VideoIcon } from 'lucide-react';
+// BridgePoint AI customization - manufacturing-specific icons
+import {
+  AlertTriangleIcon,
+  ClipboardListIcon,
+  FileTextIcon,
+  PenLineIcon,
+  SearchIcon,
+} from 'lucide-react';
 import { memo, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -52,21 +58,21 @@ const StarterList = memo(() => {
   useInitBuiltinAgent(BUILTIN_AGENT_SLUGS.groupAgentBuilder);
   useInitBuiltinAgent(BUILTIN_AGENT_SLUGS.pageAgent);
 
-  const [inputActiveMode, setInputActiveMode, navigate] = useHomeStore((s) => [
+  const [inputActiveMode, setInputActiveMode] = useHomeStore((s) => [
     s.inputActiveMode,
     s.setInputActiveMode,
-    s.navigate,
   ]);
 
+  // BridgePoint AI customization - manufacturing-specific starter buttons
   const items: StarterItem[] = useMemo(
     () => [
       {
-        icon: BotIcon,
+        icon: AlertTriangleIcon,
         key: 'agent',
         titleKey: 'starter.createAgent',
       },
       {
-        icon: GroupBotSquareIcon,
+        icon: FileTextIcon,
         key: 'group',
         titleKey: 'starter.createGroup',
       },
@@ -76,38 +82,22 @@ const StarterList = memo(() => {
         titleKey: 'starter.write',
       },
       {
-        icon: ImageIcon,
+        icon: ClipboardListIcon,
         key: 'image',
         titleKey: 'starter.imageGeneration',
       },
       {
-        hot: true,
-        icon: VideoIcon,
+        icon: SearchIcon,
         key: 'video',
         titleKey: 'starter.videoGeneration',
       },
-      // {
-      //   disabled: true,
-      //   icon: MicroscopeIcon,
-      //   key: 'research',
-      //   titleKey: 'starter.deepResearch',
-      // },
     ],
     [],
   );
 
+  // BridgePoint AI customization - all buttons toggle input mode (no video/image navigation)
   const handleClick = useCallback(
     (key: StarterMode) => {
-      if (key === 'video') {
-        navigate?.('/video');
-        return;
-      }
-
-      if (key === 'image') {
-        navigate?.('/image?model=gemini-3.1-flash-image-preview:image');
-        return;
-      }
-
       // Toggle mode: if clicking the active mode, clear it; otherwise set it
       if (inputActiveMode === key) {
         setInputActiveMode(null);
@@ -115,7 +105,7 @@ const StarterList = memo(() => {
         setInputActiveMode(key);
       }
     },
-    [inputActiveMode, setInputActiveMode, navigate],
+    [inputActiveMode, setInputActiveMode],
   );
 
   return (
@@ -136,7 +126,6 @@ const StarterList = memo(() => {
             onClick={() => handleClick(item.key)}
           >
             {t(item.titleKey)}
-            {item.hot && ' 🔥'}
           </Button>
         );
 

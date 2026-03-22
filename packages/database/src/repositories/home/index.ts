@@ -1,3 +1,4 @@
+import { INBOX_SESSION_ID } from '@lobechat/const';
 import {
   type SidebarAgentItem,
   type SidebarAgentListResponse,
@@ -58,7 +59,13 @@ export class HomeRepository {
       .from(agents)
       .leftJoin(agentsToSessions, eq(agents.id, agentsToSessions.agentId))
       .leftJoin(sessions, eq(agentsToSessions.sessionId, sessions.id))
-      .where(and(eq(agents.userId, this.userId), not(eq(agents.virtual, true))))
+      .where(
+        and(
+          eq(agents.userId, this.userId),
+          not(eq(agents.virtual, true)),
+          not(eq(agents.slug, INBOX_SESSION_ID)),
+        ),
+      )
       .orderBy(desc(agents.updatedAt));
 
     // 2. Query all chatGroups (group chats)
@@ -221,6 +228,7 @@ export class HomeRepository {
         and(
           eq(agents.userId, this.userId),
           not(eq(agents.virtual, true)),
+          not(eq(agents.slug, INBOX_SESSION_ID)),
           or(ilike(agents.title, searchPattern), ilike(agents.description, searchPattern)),
         ),
       )

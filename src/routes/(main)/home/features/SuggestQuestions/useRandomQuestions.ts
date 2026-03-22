@@ -2,7 +2,8 @@ import { useCallback, useState } from 'react';
 
 import { type StarterMode } from '@/store/home';
 
-const QUESTION_COUNT = 40;
+/** BridgePoint: only manufacturing example prompts (chat.01–06) are defined. */
+const QUESTION_COUNT = 6;
 const DISPLAY_COUNT = 6;
 
 const shuffleArray = <T>(array: T[]): T[] => {

@@ -42,7 +42,9 @@ const SPAGlobalProvider = memo<PropsWithChildren>(({ children }) => {
   return (
     <Locale defaultLang={locale}>
       <NextThemeProvider>
-        <AppTheme defaultPrimaryColor={'geekblue' as any}>
+        <AppTheme defaultPrimaryColor={'blue' as any}>
+          {' '}
+          {/* BridgePoint AI customization - blue (#3B82F6) primary */}
           <ServerConfigStoreProvider
             featureFlags={serverConfig?.featureFlags}
             isMobile={isMobile}

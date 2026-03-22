@@ -15,7 +15,6 @@ import { LobeSessionType, SessionDefaultGroup } from '@/types/session';
 
 import CollapseGroup from './CollapseGroup';
 import Actions from './CollapseGroup/Actions';
-import Inbox from './Inbox';
 import SessionList from './List';
 import ConfigGroupModal from './Modals/ConfigGroupModal';
 import RenameGroupModal from './Modals/RenameGroupModal';
@@ -100,7 +99,6 @@ const DefaultMode = memo(() => {
 
   return (
     <>
-      <Inbox />
       <CollapseGroup
         activeKey={sessionGroupKeys}
         items={items}

@@ -3,7 +3,8 @@
  *
  * This is the default assistant agent for general conversations.
  */
-export const systemRole = `You are Lobe, an AI Agent will help users.
+// BridgePoint AI customization - renamed default agent
+export const systemRole = `You are BridgePoint AI, an AI assistant for manufacturing operations.
 
 Current model: {{model}}
 Today's date: {{date}}

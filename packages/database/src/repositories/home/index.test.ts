@@ -137,6 +137,48 @@ describe('HomeRepository', () => {
       expect(result.ungrouped).toHaveLength(1);
       expect(result.ungrouped[0].title).toBe('Normal Agent');
     });
+
+    it('should exclude the default inbox assistant (slug inbox) even when not virtual', async () => {
+      const [inboxLike] = await serverDB
+        .insert(agents)
+        .values({
+          slug: 'inbox',
+          title: 'Lobe AI',
+          userId,
+          virtual: false,
+        })
+        .returning();
+
+      const [session] = await serverDB.insert(sessions).values({ userId }).returning();
+
+      await serverDB.insert(agentsToSessions).values({
+        agentId: inboxLike.id,
+        sessionId: session.id,
+        userId,
+      });
+
+      const [other] = await serverDB
+        .insert(agents)
+        .values({
+          title: 'Manufacturing Agent',
+          userId,
+          virtual: false,
+        })
+        .returning();
+
+      const [otherSession] = await serverDB.insert(sessions).values({ userId }).returning();
+
+      await serverDB.insert(agentsToSessions).values({
+        agentId: other.id,
+        sessionId: otherSession.id,
+        userId,
+      });
+
+      const result = await homeRepo.getSidebarAgentList();
+
+      expect(result.ungrouped).toHaveLength(1);
+      expect(result.ungrouped[0].title).toBe('Manufacturing Agent');
+    });
   });
 
   describe('getSidebarAgentList - chat groups', () => {
