@@ -119,7 +119,7 @@ export default () => css`
     .ant-message-content,
     [class*='messageContent'] {
       border: 1px solid var(--bp-border) !important;
-      border-radius: 14px !important;
+      border-radius: 4px 14px 14px !important;
       background: var(--bp-card-bg) !important;
     }
   }
@@ -128,7 +128,7 @@ export default () => css`
   html[data-theme='dark'] [class*='MessageItem'][class*='user'] {
     .ant-message-content,
     [class*='messageContent'] {
-      border-radius: 14px !important;
+      border-radius: 14px 4px 14px 14px !important;
       background: linear-gradient(135deg, var(--bp-accent-blue), var(--bp-accent-hover)) !important;
     }
   }
@@ -143,8 +143,17 @@ export default () => css`
   html[data-theme='dark'] [class*='chatInput'],
   html[data-theme='dark'] textarea {
     border-color: var(--bp-border-light) !important;
+    border-radius: 14px !important;
     color: var(--bp-text-primary) !important;
     background: var(--bp-input-bg) !important;
+  }
+
+  /* ── Send button gradient ── */
+  html[data-theme='dark'] [class*='ChatInput'] button[class*='send'],
+  html[data-theme='dark'] [class*='chatInput'] button[class*='send'] {
+    border: none !important;
+    border-radius: 10px !important;
+    background: linear-gradient(135deg, var(--bp-accent-blue), var(--bp-accent-hover)) !important;
   }
 
   /* ── Cards and elevated surfaces ── */

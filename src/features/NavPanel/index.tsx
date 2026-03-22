@@ -17,12 +17,12 @@ type NavPanelSnapshot = {
 let currentSnapshot: NavPanelSnapshot = null;
 const listeners = new Set<() => void>();
 
-const subscribeNavPanel = (listener: () => void) => {
+export const subscribeNavPanel = (listener: () => void) => {
   listeners.add(listener);
   return () => listeners.delete(listener);
 };
 
-const getNavPanelSnapshot = () => currentSnapshot;
+export const getNavPanelSnapshot = () => currentSnapshot;
 const setNavPanelSnapshot = (snapshot: NavPanelSnapshot) => {
   currentSnapshot = snapshot;
   listeners.forEach((listener) => listener());

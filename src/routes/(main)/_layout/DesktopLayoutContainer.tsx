@@ -42,7 +42,7 @@ const DesktopLayoutContainer: FC<PropsWithChildren> = ({ children }) => {
     <Flexbox
       className={styles.outerContainer}
       height={'100%'}
-      padding={8}
+      padding={0}
       style={outerCssVariables}
       width={'100%'}
     >

@@ -14,7 +14,7 @@ const useStyles = createStyles(({ css }) => ({
 
     flex: 1;
 
-    padding: 20px;
+    padding: 16px;
     border: 1px solid var(--bp-border);
     border-radius: 12px;
 
@@ -29,12 +29,12 @@ const useStyles = createStyles(({ css }) => ({
     }
   `,
   cardDesc: css`
-    font-size: 12px;
+    font-size: 11px;
     line-height: 1.4;
     color: var(--bp-text-muted);
   `,
   cardIcon: css`
-    font-size: 28px;
+    font-size: 20px;
   `,
   cardTitle: css`
     font-size: 14px;
@@ -59,24 +59,25 @@ const useStyles = createStyles(({ css }) => ({
 
     width: 72px;
     height: 72px;
-    border-radius: 18px;
+    border-radius: 20px;
 
     font-size: 36px;
     font-weight: 800;
     color: #fff;
 
     background: linear-gradient(135deg, #3b82f6, #6366f1);
+    box-shadow: 0 4px 20px rgb(59 130 246 / 20%);
   `,
   subtitle: css`
     max-width: 520px;
 
-    font-size: 14px;
+    font-size: 15px;
     line-height: 1.6;
     color: var(--bp-text-secondary);
     text-align: center;
   `,
   title: css`
-    font-size: 28px;
+    font-size: 24px;
     font-weight: 700;
     color: var(--bp-text-primary);
   `,
@@ -126,7 +127,7 @@ const BridgePointWelcome = memo(() => {
         </span>
 
         {/* Quick-start cards */}
-        <Flexbox horizontal gap={16} style={{ marginTop: 12, width: '100%' }}>
+        <Flexbox horizontal gap={12} style={{ marginTop: 20, width: '100%' }}>
           {QUICK_STARTS.map((qs) => (
             <div className={styles.card} key={qs.title}>
               <Flexbox gap={10}>

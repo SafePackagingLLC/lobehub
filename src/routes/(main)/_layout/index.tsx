@@ -12,12 +12,12 @@ import Loading from '@/components/Loading/BrandTextLoading';
 import { isDesktop } from '@/const/version';
 import { BANNER_HEIGHT } from '@/features/AlertBanner/CloudBanner';
 import BridgePointAgentPanel from '@/features/BridgePointAgentPanel';
+import BridgePointSidebar from '@/features/BridgePointSidebar';
 import DesktopFileMenuBridge from '@/features/DesktopFileMenuBridge';
 import DesktopNavigationBridge from '@/features/DesktopNavigationBridge';
 import AuthRequiredModal from '@/features/Electron/AuthRequiredModal';
 import TitleBar from '@/features/Electron/titlebar/TitleBar';
 import HotkeyHelperPanel from '@/features/HotkeyHelperPanel';
-import NavPanel from '@/features/NavPanel';
 import { useFeedbackModal } from '@/hooks/useFeedbackModal';
 import { usePlatform } from '@/hooks/usePlatform';
 import { MarketAuthProvider } from '@/layout/AuthProvider/MarketAuth';
@@ -71,7 +71,7 @@ const Layout: FC = () => {
                 : '100%'
           }
         >
-          <NavPanel />
+          <BridgePointSidebar />
           <DesktopLayoutContainer>
             <MarketAuthProvider isDesktop={isDesktop}>
               <DesktopHomeLayout>
