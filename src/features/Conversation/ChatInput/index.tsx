@@ -189,6 +189,7 @@ const ChatInput = memo<ChatInputProps>(
           extraActionItems={extraActionItems}
           leftContent={leftContent}
           sendAreaPrefix={sendAreaPrefix}
+          showRuntimeConfig={false}
         />
       </WideScreenContainer>
     );

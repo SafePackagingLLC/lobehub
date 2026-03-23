@@ -2,9 +2,8 @@
 
 import { Flexbox } from '@lobehub/ui';
 import { createStyles } from 'antd-style';
-import { Paperclip, Settings2, Share2 } from 'lucide-react';
+import { Paperclip, Share2 } from 'lucide-react';
 import { memo, useCallback, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import {
   AGENTS,
@@ -17,7 +16,6 @@ import { useShareModal } from '@/features/ShareModal';
 import { useAgentStore } from '@/store/agent';
 import { agentSelectors } from '@/store/agent/selectors/selectors';
 
-import HeaderActions from './HeaderActions';
 import Tags from './Tags';
 
 const useStyles = createStyles(({ css }) => ({
@@ -99,9 +97,7 @@ const useStyles = createStyles(({ css }) => ({
 
 const Header = memo(() => {
   const { styles } = useStyles();
-  const navigate = useNavigate();
   const agentTitle = useAgentStore(agentSelectors.currentAgentTitle);
-  const activeAgentId = useAgentStore((s) => s.activeAgentId);
   const { openShareModal } = useShareModal();
 
   // Match BridgePoint agent by title — LobeChat agent titles are like "🔧 Equipment Troubleshooting"
@@ -163,10 +159,6 @@ const Header = memo(() => {
     );
   }, [agentMeta, styles.agentIcon]);
 
-  const handleSettings = useCallback(() => {
-    if (activeAgentId) navigate(`/agent/${activeAgentId}/setting`);
-  }, [activeAgentId, navigate]);
-
   const handleExport = useCallback(() => {
     openShareModal();
   }, [openShareModal]);
@@ -198,15 +190,10 @@ const Header = memo(() => {
             <Paperclip size={12} />
             Attach
           </button>
-          <button className={styles.headerBtn} onClick={handleSettings}>
-            <Settings2 size={12} />
-            Settings
-          </button>
           <button className={styles.headerBtn} onClick={handleExport}>
             <Share2 size={12} />
             Export
           </button>
-          <HeaderActions />
         </Flexbox>
       }
       style={{

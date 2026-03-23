@@ -4,8 +4,7 @@ import { Flexbox } from '@lobehub/ui';
 import { createStyles } from 'antd-style';
 import { Plus } from 'lucide-react';
 import { memo, useCallback } from 'react';
-
-import { useCreateMenuItems } from '../hooks';
+import { useNavigate } from 'react-router-dom';
 
 const useStyles = createStyles(({ css }) => ({
   brand: css`
@@ -35,7 +34,7 @@ const useStyles = createStyles(({ css }) => ({
     align-items: center;
     justify-content: center;
 
-    width: 100%;
+    width: calc(100% - 32px);
     margin-block: 0;
     margin-inline: 16px;
     padding-block: 10px;
@@ -73,11 +72,11 @@ const useStyles = createStyles(({ css }) => ({
 
 const Header = memo(() => {
   const { styles } = useStyles();
-  const { createAgent, isMutatingAgent } = useCreateMenuItems();
+  const navigate = useNavigate();
 
   const handleNewConversation = useCallback(() => {
-    if (!isMutatingAgent) createAgent();
-  }, [createAgent, isMutatingAgent]);
+    navigate('/');
+  }, [navigate]);
 
   return (
     <Flexbox gap={12}>

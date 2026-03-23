@@ -46,7 +46,7 @@ const ModelTag = memo(() => {
     const matched = AGENTS.find((a) => agentTitle.includes(a.name));
     if (!matched) return null;
     const modelName = MODEL_DISPLAY[matched.model] || matched.model;
-    return `${modelName} via OpenRouter`;
+    return modelName;
   }, [agentTitle]);
 
   if (!displayText) return null;

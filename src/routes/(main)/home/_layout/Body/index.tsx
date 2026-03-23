@@ -201,8 +201,8 @@ const ConvoItem = memo<{ active: boolean; item: SidebarAgentItem }>(({ item, act
 /* ── Body ── */
 const Body = memo(() => {
   const { styles } = useStyles();
-  const params = useParams<{ id?: string }>();
-  const activeId = params.id;
+  const params = useParams<{ aid?: string }>();
+  const activeId = params.aid;
 
   const isInit = useHomeStore(homeAgentListSelectors.isAgentListInit);
   const agentPageSize = useGlobalStore(systemStatusSelectors.agentPageSize);

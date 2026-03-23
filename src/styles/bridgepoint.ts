@@ -24,7 +24,7 @@ export default () => css`
     --bp-card-bg: #1a2340;
     --bp-card-hover: #1f2a4a;
     --bp-input-bg: #141b36;
-    --bp-chat-bg: #111827;
+    --bp-chat-bg: #0f1629;
 
     /* Borders */
     --bp-border: rgb(202 220 252 / 8%);
@@ -88,6 +88,16 @@ export default () => css`
     --lobe-vars-colorSuccess: var(--bp-success) !important;
     --lobe-vars-colorWarning: var(--bp-warning) !important;
     --lobe-vars-colorError: var(--bp-danger) !important;
+  }
+
+  /* ── Antd token overrides ──
+     Antd's ConfigProvider / App wrapper re-declares --ant-* tokens
+     on its own <div class="ant-app">, overriding root-level values.
+     Target that wrapper directly so our navy palette wins. */
+  html[data-theme='dark'] .ant-app {
+    --ant-color-bg-layout: var(--bp-background) !important;
+    --ant-color-bg-container: var(--bp-chat-bg) !important;
+    --ant-color-bg-elevated: var(--bp-card-bg) !important;
   }
   /* stylelint-enable custom-property-pattern */
 

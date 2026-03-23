@@ -1,17 +1,10 @@
-import React, { memo } from 'react';
+import { memo } from 'react';
 
-import { NavPanelPortal } from '@/features/NavPanel';
-import SideBarLayout from '@/features/NavPanel/SideBarLayout';
-
-import Body from './Body';
-import Header from './Header';
-
+// No longer push agent-specific sidebar content via NavPanelPortal.
+// The BridgePointSidebar falls back to <SidebarContent /> (all conversations)
+// when no portal is active, giving a seamless workspace feel.
 const Sidebar = memo(() => {
-  return (
-    <NavPanelPortal navKey="agent">
-      <SideBarLayout body={<Body />} header={<Header />} />
-    </NavPanelPortal>
-  );
+  return null;
 });
 
 Sidebar.displayName = 'ChatSidebar';
