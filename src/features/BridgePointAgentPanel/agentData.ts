@@ -24,7 +24,10 @@ export interface BPAgent {
   description: string;
   emoji: string;
   id: string;
+  model: string;
   name: string;
+  provider: string;
+  temperature: number;
 }
 
 export const BEHAVIOR_LABELS: Record<AgentBehavior, string> = {
@@ -88,7 +91,10 @@ export const AGENTS: BPAgent[] = [
     description: 'Diagnose equipment issues with guided troubleshooting',
     emoji: '🔧',
     id: 'equipment-troubleshooting',
+    model: 'anthropic/claude-sonnet-4',
     name: 'Equipment Troubleshooting',
+    provider: 'openrouter',
+    temperature: 0.4,
   },
   {
     behavior: 'execute',
@@ -96,7 +102,10 @@ export const AGENTS: BPAgent[] = [
     description: 'Search quality standards, SOPs, and compliance docs',
     emoji: '📑',
     id: 'quality-compliance-search',
+    model: 'anthropic/claude-sonnet-4',
     name: 'Quality & Compliance Search',
+    provider: 'openrouter',
+    temperature: 0.2,
   },
   {
     behavior: 'execute',
@@ -104,7 +113,10 @@ export const AGENTS: BPAgent[] = [
     description: 'Generate structured shift handoff reports',
     emoji: '🔄',
     id: 'shift-handoff',
+    model: 'anthropic/claude-haiku-4',
     name: 'Shift Handoff Report',
+    provider: 'openrouter',
+    temperature: 0.3,
   },
   {
     behavior: 'execute',
@@ -112,7 +124,10 @@ export const AGENTS: BPAgent[] = [
     description: 'Process invoices, POs, and packing slips',
     emoji: '🧾',
     id: 'invoice-po-processor',
+    model: 'google/gemini-2.0-flash',
     name: 'Invoice & PO Processor',
+    provider: 'openrouter',
+    temperature: 0.2,
   },
   {
     behavior: 'execute',
@@ -120,7 +135,10 @@ export const AGENTS: BPAgent[] = [
     description: 'Create and manage maintenance work orders',
     emoji: '🔨',
     id: 'maintenance-work-order',
+    model: 'anthropic/claude-haiku-4',
     name: 'Maintenance Work Order',
+    provider: 'openrouter',
+    temperature: 0.3,
   },
   {
     behavior: 'execute',
@@ -128,7 +146,10 @@ export const AGENTS: BPAgent[] = [
     description: 'Summarize meetings, reviews, and discussions',
     emoji: '📝',
     id: 'meeting-summarizer',
+    model: 'anthropic/claude-haiku-4',
     name: 'Meeting & Review Summarizer',
+    provider: 'openrouter',
+    temperature: 0.4,
   },
   {
     behavior: 'execute',
@@ -136,7 +157,10 @@ export const AGENTS: BPAgent[] = [
     description: 'Track training records and certification status',
     emoji: '🎓',
     id: 'training-certification',
+    model: 'anthropic/claude-haiku-4',
     name: 'Training & Certification Tracker',
+    provider: 'openrouter',
+    temperature: 0.3,
   },
 
   // ── Ask Minimal (4) ──
@@ -146,7 +170,10 @@ export const AGENTS: BPAgent[] = [
     description: 'Generate detailed maintenance and inspection reports',
     emoji: '📋',
     id: 'maintenance-report',
+    model: 'anthropic/claude-haiku-4',
     name: 'Maintenance Report',
+    provider: 'openrouter',
+    temperature: 0.3,
   },
   {
     behavior: 'minimal',
@@ -154,7 +181,10 @@ export const AGENTS: BPAgent[] = [
     description: 'Create technical drawings and process diagrams',
     emoji: '📐',
     id: 'technical-drawing',
+    model: 'anthropic/claude-sonnet-4',
     name: 'Technical Drawing & Diagram',
+    provider: 'openrouter',
+    temperature: 0.4,
   },
   {
     behavior: 'minimal',
@@ -162,7 +192,10 @@ export const AGENTS: BPAgent[] = [
     description: 'Analyze costs, budgets, and spending trends',
     emoji: '💰',
     id: 'cost-budget-analyst',
+    model: 'anthropic/claude-sonnet-4',
     name: 'Cost & Budget Analyst',
+    provider: 'openrouter',
+    temperature: 0.3,
   },
   {
     behavior: 'minimal',
@@ -170,7 +203,10 @@ export const AGENTS: BPAgent[] = [
     description: 'Manage shipping, tracking, and logistics',
     emoji: '🚚',
     id: 'shipping-logistics',
+    model: 'anthropic/claude-haiku-4',
     name: 'Shipping & Logistics',
+    provider: 'openrouter',
+    temperature: 0.3,
   },
 
   // ── Ask First (5) ──
@@ -180,7 +216,10 @@ export const AGENTS: BPAgent[] = [
     description: 'Document and report safety incidents',
     emoji: '⚠️',
     id: 'safety-incident-reporter',
+    model: 'anthropic/claude-sonnet-4',
     name: 'Safety Incident Reporter',
+    provider: 'openrouter',
+    temperature: 0.3,
   },
   {
     behavior: 'ask-first',
@@ -188,7 +227,10 @@ export const AGENTS: BPAgent[] = [
     description: 'Coach continuous improvement and lean practices',
     emoji: '📈',
     id: 'continuous-improvement',
+    model: 'anthropic/claude-sonnet-4',
     name: 'Continuous Improvement Coach',
+    provider: 'openrouter',
+    temperature: 0.6,
   },
   {
     behavior: 'ask-first',
@@ -196,7 +238,10 @@ export const AGENTS: BPAgent[] = [
     description: 'Draft executive summaries and briefs',
     emoji: '👔',
     id: 'executive-brief',
+    model: 'anthropic/claude-sonnet-4',
     name: 'Executive Brief',
+    provider: 'openrouter',
+    temperature: 0.5,
   },
   {
     behavior: 'ask-first',
@@ -204,7 +249,10 @@ export const AGENTS: BPAgent[] = [
     description: 'Analyze decisions, risks, and opportunities',
     emoji: '🔍',
     id: 'due-diligence',
+    model: 'anthropic/claude-sonnet-4',
     name: 'Due Diligence & Decision Analysis',
+    provider: 'openrouter',
+    temperature: 0.4,
   },
   {
     behavior: 'platform',
@@ -212,7 +260,10 @@ export const AGENTS: BPAgent[] = [
     description: 'Teach and improve your entire workspace',
     emoji: '🧠',
     id: 'company-intelligence',
+    model: 'anthropic/claude-sonnet-4',
     name: 'Company Intelligence Advisor',
+    provider: 'openrouter',
+    temperature: 0.5,
   },
 
   // ── Coming Soon (3) ──
@@ -222,7 +273,10 @@ export const AGENTS: BPAgent[] = [
     description: 'Draft and manage professional emails',
     emoji: '📧',
     id: 'smart-email',
+    model: 'anthropic/claude-sonnet-4',
     name: 'Smart Email',
+    provider: 'openrouter',
+    temperature: 0.4,
   },
   {
     behavior: 'soon',
@@ -230,7 +284,10 @@ export const AGENTS: BPAgent[] = [
     description: 'Forecast demand and track inventory',
     emoji: '📊',
     id: 'demand-analyst',
+    model: 'anthropic/claude-sonnet-4',
     name: 'Inventory & Demand Analyst',
+    provider: 'openrouter',
+    temperature: 0.3,
   },
   {
     behavior: 'soon',
@@ -238,7 +295,10 @@ export const AGENTS: BPAgent[] = [
     description: 'Daily digest of priorities and insights',
     emoji: '💡',
     id: 'daily-insight',
+    model: 'anthropic/claude-sonnet-4',
     name: 'Daily Insight',
+    provider: 'openrouter',
+    temperature: 0.5,
   },
 ];
 

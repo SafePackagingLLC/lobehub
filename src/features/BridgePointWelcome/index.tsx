@@ -6,7 +6,14 @@
  */
 import { Flexbox } from '@lobehub/ui';
 import { createStyles } from 'antd-style';
-import { memo, useMemo } from 'react';
+import { memo, useCallback, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import { useAgentStore } from '@/store/agent';
+import { useHomeStore } from '@/store/home';
+
+import { AGENT_CONFIGS, resolveSystemRole } from '../BridgePointAgentPanel/agentConfigs';
+import { AGENTS } from '../BridgePointAgentPanel/agentData';
 
 const useStyles = createStyles(({ css }) => ({
   card: css`
@@ -85,16 +92,19 @@ const useStyles = createStyles(({ css }) => ({
 
 const QUICK_STARTS = [
   {
+    agentId: 'equipment-troubleshooting',
     desc: 'Diagnose a problem with guided troubleshooting steps',
     icon: '🔧',
     title: 'Equipment Issue',
   },
   {
+    agentId: 'invoice-po-processor',
     desc: 'Process a batch of invoices or purchase orders',
     icon: '🧾',
     title: 'Invoice Batch',
   },
   {
+    agentId: 'meeting-summarizer',
     desc: 'Prepare a summary brief for your next meeting',
     icon: '📋',
     title: 'Meeting Prep',
@@ -110,7 +120,50 @@ function getGreeting(): string {
 
 const BridgePointWelcome = memo(() => {
   const { styles } = useStyles();
+  const navigate = useNavigate();
   const greeting = useMemo(() => getGreeting(), []);
+  const [isCreating, setIsCreating] = useState(false);
+
+  const storeCreateAgent = useAgentStore((s) => s.createAgent);
+  const refreshAgentList = useHomeStore((s) => s.refreshAgentList);
+
+  const handleQuickStart = useCallback(
+    async (bpAgentId: string) => {
+      if (isCreating) return;
+      const agent = AGENTS.find((a) => a.id === bpAgentId);
+      if (!agent) return;
+
+      const agentConfig = AGENT_CONFIGS[agent.id];
+      const systemRole = agentConfig
+        ? resolveSystemRole(agentConfig.systemRole)
+        : `You are the ${agent.name} for BridgePoint AI. ${agent.description}.`;
+
+      setIsCreating(true);
+      try {
+        const result = await storeCreateAgent({
+          config: {
+            description: agent.description,
+            model: agent.model,
+            params: { temperature: agent.temperature },
+            provider: agent.provider,
+            systemRole,
+            tags: [agent.category, agent.behavior],
+            title: `${agent.emoji} ${agent.name}`,
+          },
+        });
+
+        if (result.agentId) {
+          refreshAgentList();
+          navigate(`/agent/${result.agentId}`);
+        }
+      } catch (error) {
+        console.error('[BridgePoint] Failed to create agent from quick-start:', error);
+      } finally {
+        setIsCreating(false);
+      }
+    },
+    [isCreating, storeCreateAgent, navigate, refreshAgentList],
+  );
 
   return (
     <div className={styles.container}>
@@ -129,7 +182,13 @@ const BridgePointWelcome = memo(() => {
         {/* Quick-start cards */}
         <Flexbox horizontal gap={12} style={{ marginTop: 20, width: '100%' }}>
           {QUICK_STARTS.map((qs) => (
-            <div className={styles.card} key={qs.title}>
+            <div
+              className={styles.card}
+              key={qs.title}
+              role="button"
+              tabIndex={0}
+              onClick={() => handleQuickStart(qs.agentId)}
+            >
               <Flexbox gap={10}>
                 <span className={styles.cardIcon}>{qs.icon}</span>
                 <span className={styles.cardTitle}>{qs.title}</span>

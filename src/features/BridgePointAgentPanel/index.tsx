@@ -3,14 +3,22 @@
  *
  * Renders the full agent panel with search, category filters,
  * grouped agent cards, "Teach Your Workspace" CTA, and stats bar.
+ *
+ * Clicking an agent card creates (or switches to) a LobeChat session
+ * with the agent's system prompt, model, and temperature pre-configured.
  */
 import { Flexbox, ScrollShadow } from '@lobehub/ui';
 import { Input } from 'antd';
 import { createStyles } from 'antd-style';
 import { SearchIcon } from 'lucide-react';
-import { memo, useCallback, useMemo, useState } from 'react';
+import { memo, useCallback, useMemo, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import { useAgentStore } from '@/store/agent';
+import { useHomeStore } from '@/store/home';
 
 import AgentCard from './AgentCard';
+import { AGENT_CONFIGS, resolveSystemRole } from './agentConfigs';
 import { AGENTS, BEHAVIOR_SECTIONS, type BPAgent, FILTER_MAP, FILTER_TABS } from './agentData';
 
 const PANEL_WIDTH = 340;
@@ -128,13 +136,64 @@ const useStyles = createStyles(({ css }) => ({
 
 const BridgePointAgentPanel = memo(() => {
   const { styles, cx } = useStyles();
+  const navigate = useNavigate();
   const [search, setSearch] = useState('');
   const [activeFilter, setActiveFilter] = useState<string>('All');
   const [activeAgent, setActiveAgent] = useState<string | null>(null);
+  const [isCreating, setIsCreating] = useState(false);
 
-  const handleAgentClick = useCallback((agent: BPAgent) => {
-    setActiveAgent((prev) => (prev === agent.id ? null : agent.id));
-  }, []);
+  const createAgent = useAgentStore((s) => s.createAgent);
+  const refreshAgentList = useHomeStore((s) => s.refreshAgentList);
+
+  // Map BridgePoint agent IDs → LobeChat agent IDs to avoid duplicate sessions
+  const agentSessionMap = useRef<Map<string, string>>(new Map());
+
+  const handleAgentClick = useCallback(
+    async (agent: BPAgent) => {
+      if (isCreating) return;
+
+      // If we already created a session for this BP agent, switch to it
+      const existingAgentId = agentSessionMap.current.get(agent.id);
+      if (existingAgentId) {
+        setActiveAgent(agent.id);
+        navigate(`/agent/${existingAgentId}`);
+        return;
+      }
+
+      // Build the LobeChat agent config from BridgePoint data
+      const agentConfig = AGENT_CONFIGS[agent.id];
+      const systemRole = agentConfig
+        ? resolveSystemRole(agentConfig.systemRole)
+        : `You are the ${agent.name} for BridgePoint AI. ${agent.description}.`;
+
+      setIsCreating(true);
+      try {
+        const result = await createAgent({
+          config: {
+            description: agent.description,
+            model: agent.model,
+            params: { temperature: agent.temperature },
+            provider: agent.provider,
+            systemRole,
+            tags: [agent.category, agent.behavior],
+            title: `${agent.emoji} ${agent.name}`,
+          },
+        });
+
+        if (result.agentId) {
+          agentSessionMap.current.set(agent.id, result.agentId);
+          setActiveAgent(agent.id);
+          refreshAgentList();
+          navigate(`/agent/${result.agentId}`);
+        }
+      } catch (error) {
+        console.error('[BridgePoint] Failed to create agent session:', error);
+      } finally {
+        setIsCreating(false);
+      }
+    },
+    [isCreating, createAgent, navigate, refreshAgentList],
+  );
 
   const filteredSections = useMemo(() => {
     const q = search.toLowerCase().trim();
@@ -235,7 +294,10 @@ const BridgePointAgentPanel = memo(() => {
           className={styles.ctaCard}
           role="button"
           tabIndex={0}
-          onClick={() => setActiveAgent('company-intelligence')}
+          onClick={() => {
+            const ciAgent = AGENTS.find((a) => a.id === 'company-intelligence');
+            if (ciAgent) handleAgentClick(ciAgent);
+          }}
         >
           <Flexbox horizontal align="center" gap={10}>
             <span style={{ fontSize: 24 }}>🧠</span>
