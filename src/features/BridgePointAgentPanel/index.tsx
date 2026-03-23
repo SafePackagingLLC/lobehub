@@ -19,7 +19,7 @@ import { useAgentStore } from '@/store/agent';
 import { useHomeStore } from '@/store/home';
 
 import AgentCard from './AgentCard';
-import { AGENT_CONFIGS, resolveSystemRole } from './agentConfigs';
+import { AGENT_CONFIGS, AGENT_OPENINGS, resolveSystemRole } from './agentConfigs';
 import { AGENTS, BEHAVIOR_SECTIONS, type BPAgent, FILTER_MAP, FILTER_TABS } from './agentData';
 
 const PANEL_WIDTH = 340;
@@ -181,11 +181,14 @@ const BridgePointAgentPanel = memo(() => {
           ? resolveSystemRole(agentConfig.systemRole)
           : `You are the ${agent.name} for BridgePoint AI. ${agent.description}.`;
 
+        const openings = AGENT_OPENINGS[agent.id];
         const result = await createAgent({
           config: {
             description: agent.description,
             marketIdentifier: marketId,
             model: agent.model,
+            openingMessage: openings?.openingMessage,
+            openingQuestions: openings?.openingQuestions,
             params: { temperature: agent.temperature },
             provider: agent.provider,
             systemRole,

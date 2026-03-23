@@ -9,7 +9,7 @@ import { agentService } from '@/services/agent';
 import { useAgentStore } from '@/store/agent';
 import { useHomeStore } from '@/store/home';
 
-import { AGENT_CONFIGS, resolveSystemRole } from './agentConfigs';
+import { AGENT_CONFIGS, AGENT_OPENINGS, resolveSystemRole } from './agentConfigs';
 import { AGENTS, type BPAgent } from './agentData';
 
 // Module-level cache shared with the main agent panel
@@ -49,11 +49,14 @@ const SwitchAgentAction = memo(() => {
         ? resolveSystemRole(agentConfig.systemRole)
         : `You are the ${agent.name} for BridgePoint AI. ${agent.description}.`;
 
+      const openings = AGENT_OPENINGS[agent.id];
       const result = await storeCreateAgent({
         config: {
           description: agent.description,
           marketIdentifier: `bp:${agent.id}`,
           model: agent.model,
+          openingMessage: openings?.openingMessage,
+          openingQuestions: openings?.openingQuestions,
           params: { temperature: agent.temperature },
           provider: agent.provider,
           systemRole,
