@@ -8,6 +8,7 @@ export const styles = createStaticStyles(({ css, cssVar }) => ({
     position: relative;
     overflow: hidden;
     background: ${cssVar.colorBgContainer};
+    transition: opacity 0.15s ease;
   `,
 
   // 外层容器

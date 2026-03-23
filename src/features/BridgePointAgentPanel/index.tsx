@@ -11,7 +11,7 @@ import { Flexbox, ScrollShadow } from '@lobehub/ui';
 import { Input } from 'antd';
 import { createStyles } from 'antd-style';
 import { SearchIcon } from 'lucide-react';
-import { memo, useCallback, useMemo, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { agentService } from '@/services/agent';
@@ -150,6 +150,12 @@ const BridgePointAgentPanel = memo(() => {
   const createAgent = useAgentStore((s) => s.createAgent);
   const refreshAgentList = useHomeStore((s) => s.refreshAgentList);
 
+  // Preload agent route chunks so navigation feels instant
+  useEffect(() => {
+    import('@/routes/(main)/agent');
+    import('@/routes/(main)/agent/_layout');
+  }, []);
+
   const handleAgentClick = useCallback(
     async (agent: BPAgent) => {
       if (isCreating) return;
@@ -160,6 +166,7 @@ const BridgePointAgentPanel = memo(() => {
       const cachedAgentId = bpAgentCache.get(agent.id);
       if (cachedAgentId) {
         setActiveAgent(agent.id);
+        useAgentStore.setState({ activeAgentId: cachedAgentId });
         navigate(`/agent/${cachedAgentId}`);
         return;
       }
@@ -171,6 +178,7 @@ const BridgePointAgentPanel = memo(() => {
         if (existingAgentId) {
           bpAgentCache.set(agent.id, existingAgentId);
           setActiveAgent(agent.id);
+          useAgentStore.setState({ activeAgentId: existingAgentId });
           navigate(`/agent/${existingAgentId}`);
           return;
         }
@@ -200,6 +208,7 @@ const BridgePointAgentPanel = memo(() => {
         if (result.agentId) {
           bpAgentCache.set(agent.id, result.agentId);
           setActiveAgent(agent.id);
+          useAgentStore.setState({ activeAgentId: result.agentId });
           refreshAgentList();
           navigate(`/agent/${result.agentId}`);
         }
