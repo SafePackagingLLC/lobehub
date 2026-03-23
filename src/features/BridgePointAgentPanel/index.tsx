@@ -11,9 +11,10 @@ import { Flexbox, ScrollShadow } from '@lobehub/ui';
 import { Input } from 'antd';
 import { createStyles } from 'antd-style';
 import { SearchIcon } from 'lucide-react';
-import { memo, useCallback, useMemo, useRef, useState } from 'react';
+import { memo, useCallback, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { agentService } from '@/services/agent';
 import { useAgentStore } from '@/store/agent';
 import { useHomeStore } from '@/store/home';
 
@@ -22,6 +23,10 @@ import { AGENT_CONFIGS, resolveSystemRole } from './agentConfigs';
 import { AGENTS, BEHAVIOR_SECTIONS, type BPAgent, FILTER_MAP, FILTER_TABS } from './agentData';
 
 const PANEL_WIDTH = 340;
+
+// Module-level cache: BridgePoint agent ID → LobeChat agent ID
+// Survives re-renders; DB lookup is the true source of deduplication across refreshes
+const bpAgentCache = new Map<string, string>();
 
 const useStyles = createStyles(({ css }) => ({
   container: css`
@@ -145,32 +150,41 @@ const BridgePointAgentPanel = memo(() => {
   const createAgent = useAgentStore((s) => s.createAgent);
   const refreshAgentList = useHomeStore((s) => s.refreshAgentList);
 
-  // Map BridgePoint agent IDs → LobeChat agent IDs to avoid duplicate sessions
-  const agentSessionMap = useRef<Map<string, string>>(new Map());
-
   const handleAgentClick = useCallback(
     async (agent: BPAgent) => {
       if (isCreating) return;
 
-      // If we already created a session for this BP agent, switch to it
-      const existingAgentId = agentSessionMap.current.get(agent.id);
-      if (existingAgentId) {
+      const marketId = `bp:${agent.id}`;
+
+      // 1. Check in-memory cache first
+      const cachedAgentId = bpAgentCache.get(agent.id);
+      if (cachedAgentId) {
         setActiveAgent(agent.id);
-        navigate(`/agent/${existingAgentId}`);
+        navigate(`/agent/${cachedAgentId}`);
         return;
       }
 
-      // Build the LobeChat agent config from BridgePoint data
-      const agentConfig = AGENT_CONFIGS[agent.id];
-      const systemRole = agentConfig
-        ? resolveSystemRole(agentConfig.systemRole)
-        : `You are the ${agent.name} for BridgePoint AI. ${agent.description}.`;
-
       setIsCreating(true);
       try {
+        // 2. Check DB for an existing agent with this marketIdentifier
+        const existingAgentId = await agentService.getAgentByMarketIdentifier(marketId);
+        if (existingAgentId) {
+          bpAgentCache.set(agent.id, existingAgentId);
+          setActiveAgent(agent.id);
+          navigate(`/agent/${existingAgentId}`);
+          return;
+        }
+
+        // 3. No existing agent — create a new one with marketIdentifier for persistence
+        const agentConfig = AGENT_CONFIGS[agent.id];
+        const systemRole = agentConfig
+          ? resolveSystemRole(agentConfig.systemRole)
+          : `You are the ${agent.name} for BridgePoint AI. ${agent.description}.`;
+
         const result = await createAgent({
           config: {
             description: agent.description,
+            marketIdentifier: marketId,
             model: agent.model,
             params: { temperature: agent.temperature },
             provider: agent.provider,
@@ -181,7 +195,7 @@ const BridgePointAgentPanel = memo(() => {
         });
 
         if (result.agentId) {
-          agentSessionMap.current.set(agent.id, result.agentId);
+          bpAgentCache.set(agent.id, result.agentId);
           setActiveAgent(agent.id);
           refreshAgentList();
           navigate(`/agent/${result.agentId}`);
@@ -232,8 +246,8 @@ const BridgePointAgentPanel = memo(() => {
       {/* Header */}
       <div className={styles.header}>
         <Flexbox horizontal align="center" justify="space-between" style={{ marginBottom: 12 }}>
-          <span className={styles.headerTitle}>🤖 Manufacturing Agents</span>
-          <span className={styles.headerCount}>{AGENTS.length} Agents</span>
+          <span className={styles.headerTitle}>🤖 Agent Panel</span>
+          <span className={styles.headerCount}>{totalActive} Active</span>
         </Flexbox>
 
         {/* Search */}
@@ -318,11 +332,11 @@ const BridgePointAgentPanel = memo(() => {
           <span className={styles.statLabel}>Active Agents</span>
         </Flexbox>
         <Flexbox align="center" gap={2}>
-          <span className={styles.statValue}>—</span>
-          <span className={styles.statLabel}>Time Saved</span>
+          <span className={styles.statValue}>~4.2h</span>
+          <span className={styles.statLabel}>Saved Today</span>
         </Flexbox>
         <Flexbox align="center" gap={2}>
-          <span className={styles.statValue}>—</span>
+          <span className={styles.statValue}>$3.47</span>
           <span className={styles.statLabel}>AI Cost Today</span>
         </Flexbox>
       </div>

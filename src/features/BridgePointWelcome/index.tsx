@@ -11,6 +11,8 @@ import { useNavigate } from 'react-router-dom';
 
 import { useAgentStore } from '@/store/agent';
 import { useHomeStore } from '@/store/home';
+import { useUserStore } from '@/store/user';
+import { userProfileSelectors } from '@/store/user/slices/auth/selectors';
 
 import { AGENT_CONFIGS, resolveSystemRole } from '../BridgePointAgentPanel/agentConfigs';
 import { AGENTS } from '../BridgePointAgentPanel/agentData';
@@ -92,21 +94,21 @@ const useStyles = createStyles(({ css }) => ({
 
 const QUICK_STARTS = [
   {
+    agentId: 'invoice-po-processor',
+    desc: 'Process, validate, and cross-reference invoices against POs',
+    icon: '🧾',
+    title: "Today's Invoices",
+  },
+  {
     agentId: 'equipment-troubleshooting',
-    desc: 'Diagnose a problem with guided troubleshooting steps',
+    desc: 'Diagnose symptoms, find probable causes, and get containment actions',
     icon: '🔧',
     title: 'Equipment Issue',
   },
   {
-    agentId: 'invoice-po-processor',
-    desc: 'Process a batch of invoices or purchase orders',
-    icon: '🧾',
-    title: 'Invoice Batch',
-  },
-  {
     agentId: 'meeting-summarizer',
-    desc: 'Prepare a summary brief for your next meeting',
-    icon: '📋',
+    desc: 'Summarize meeting notes with action items, owners, and deadlines',
+    icon: '📝',
     title: 'Meeting Prep',
   },
 ];
@@ -123,6 +125,8 @@ const BridgePointWelcome = memo(() => {
   const navigate = useNavigate();
   const greeting = useMemo(() => getGreeting(), []);
   const [isCreating, setIsCreating] = useState(false);
+  const fullName = useUserStore(userProfileSelectors.fullName);
+  const firstName = fullName ? fullName.split(' ')[0] : '';
 
   const storeCreateAgent = useAgentStore((s) => s.createAgent);
   const refreshAgentList = useHomeStore((s) => s.refreshAgentList);
@@ -172,7 +176,10 @@ const BridgePointWelcome = memo(() => {
         <div className={styles.logoIcon}>B</div>
 
         {/* Greeting */}
-        <span className={styles.title}>{greeting}</span>
+        <span className={styles.title}>
+          {greeting}
+          {firstName ? `, ${firstName}` : ''}
+        </span>
 
         <span className={styles.subtitle}>
           Your manufacturing AI workspace is ready. Select an agent from the panel or start with one

@@ -4,7 +4,6 @@ import { Flexbox } from '@lobehub/ui';
 import { memo } from 'react';
 
 import { useUserStore } from '@/store/user';
-import { userGeneralSettingsSelectors } from '@/store/user/selectors';
 import { authSelectors } from '@/store/user/slices/auth/selectors';
 
 import { messageStateSelectors, useConversationStore } from '../../../store';
@@ -28,9 +27,9 @@ export const AssistantMessageExtra = memo<AssistantMessageExtraProps>(
   ({ extra, id, content, performance, usage, tools, provider, model }) => {
     const loading = useConversationStore(messageStateSelectors.isMessageGenerating(id));
     const isLogin = useUserStore(authSelectors.isLogin);
-    const isDevMode = useUserStore((s) => userGeneralSettingsSelectors.config(s).isDevMode);
 
-    const showUsage = isDevMode && content !== LOADING_FLAT && !!model;
+    // BridgePoint: always show usage metadata (not just dev mode)
+    const showUsage = content !== LOADING_FLAT && !!model;
     const showTts = isLogin && !!extra?.tts;
     const showTranslate = isLogin && !!extra?.translate;
 

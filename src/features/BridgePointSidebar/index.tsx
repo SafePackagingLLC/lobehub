@@ -1,5 +1,5 @@
 /**
- * BridgePoint AI — Fixed Left Sidebar (260 px)
+ * BridgePoint AI — Fixed Left Sidebar (340 px)
  *
  * Replaces LobeChat's DraggablePanel sidebar with a fixed-width
  * BridgePoint-branded panel.  Preserves the NavPanelPortal system
@@ -18,7 +18,7 @@ import {
 } from '@/features/NavPanel';
 import SidebarContent from '@/routes/(main)/home/_layout/SidebarContent';
 
-const SIDEBAR_WIDTH = 260;
+const SIDEBAR_WIDTH = 340;
 
 const useStyles = createStyles(({ css }) => ({
   container: css`

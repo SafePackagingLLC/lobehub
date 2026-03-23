@@ -160,9 +160,14 @@ export default () => css`
   html[data-theme='dark'] .ant-card {
     border-color: var(--bp-border) !important;
     background: var(--bp-card-bg) !important;
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
 
     &:hover {
+      transform: translateY(-1px);
       background: var(--bp-card-hover) !important;
+      box-shadow: 0 4px 16px rgb(0 0 0 / 20%);
     }
   }
 
@@ -184,5 +189,100 @@ export default () => css`
   html[data-theme='dark'] .ant-select-dropdown,
   html[data-theme='dark'] .ant-popover-inner {
     background: var(--bp-card-bg) !important;
+  }
+
+  /* ── Input area glassmorphism ── */
+  html[data-theme='dark'] [class*='InputArea'],
+  html[data-theme='dark'] [class*='inputArea'],
+  html[data-theme='dark'] [class*='ChatInputArea'] {
+    border-block-start: 1px solid var(--bp-border) !important;
+    background: rgb(17 24 39 / 60%) !important;
+    backdrop-filter: blur(12px);
+  }
+
+  /* ── Scrollbar refinement ── */
+  html[data-theme='dark'] ::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  html[data-theme='dark'] ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  html[data-theme='dark'] ::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background: rgb(255 255 255 / 8%);
+  }
+
+  /* ── Message fade-in animation ── */
+  html[data-theme='dark'] [class*='message'],
+  html[data-theme='dark'] [class*='MessageItem'] {
+    animation: bp-fade-in 0.3s ease;
+  }
+
+  @keyframes bp-fade-in {
+    from {
+      transform: translateY(8px);
+      opacity: 0;
+    }
+
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  /* ── Smooth transitions for interactive elements ── */
+  html[data-theme='dark'] .ant-btn,
+  html[data-theme='dark'] .ant-input,
+  html[data-theme='dark'] .ant-select {
+    transition: all 0.15s ease;
+  }
+
+  /* ── Typing indicator (three pulsing dots) ── */
+  @keyframes bp-typing-dot {
+    0%,
+    80%,
+    100% {
+      transform: scale(0.8);
+      opacity: 0.3;
+    }
+
+    40% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  .bp-typing-indicator {
+    display: inline-flex;
+    gap: 4px;
+    align-items: center;
+
+    padding-block: 12px;
+    padding-inline: 16px;
+    border-radius: 14px 14px 14px 4px;
+
+    background: var(--bp-card-bg);
+  }
+
+  .bp-typing-indicator span {
+    display: block;
+
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+
+    background: var(--bp-text-secondary);
+
+    animation: bp-typing-dot 1.4s infinite;
+  }
+
+  .bp-typing-indicator span:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+
+  .bp-typing-indicator span:nth-child(3) {
+    animation-delay: 0.4s;
   }
 `;

@@ -2,6 +2,8 @@
 
 import { memo, useMemo } from 'react';
 
+import ModelTag from '@/features/BridgePointAgentPanel/ModelTag';
+import SwitchAgentAction from '@/features/BridgePointAgentPanel/SwitchAgentAction';
 import { type ActionKeys } from '@/features/ChatInput';
 import { ChatInput } from '@/features/Conversation';
 import { useChatStore } from '@/store/chat';
@@ -41,8 +43,10 @@ const MainChatInput = memo(() => {
   return (
     <ChatInput
       skipScrollMarginWithList
+      extraActionItems={[{ children: <SwitchAgentAction />, key: 'switch-agent' }]}
       leftActions={leftActions}
       rightActions={rightActions}
+      sendAreaPrefix={<ModelTag />}
       {...(isDevMode
         ? { sendMenu: { items: sendMenuItems } }
         : { sendButtonProps: { shape: 'round' } })}
